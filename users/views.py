@@ -1,9 +1,11 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, generics, viewsets
+from rest_framework import filters, generics, viewsets, response
+from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import AllowAny
 
-from users.models import Payments, User
-from users.serializers import UserSerializer
+from materials.models import Course
+from users.models import Payments, User, Subscription
+from users.serializers import UserSerializer, SubscriptionSerializer
 
 
 class PaymentsViewSet(viewsets.ModelViewSet):
@@ -24,8 +26,10 @@ class UserCreateAPIView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
 
     def perform_create(self, serializer):
+        password = self.request.data.get("password")
+
         user = serializer.save(is_active=True)
-        user.set_password(user.password)
+        user.set_password(password)
         user.save()
 
 
@@ -46,3 +50,40 @@ class UserUpdateAPIView(generics.UpdateAPIView):
 
 class UserDestroyAPIView(generics.DestroyAPIView):
     queryset = User.objects.all()
+
+
+class SubscriptionCreateAPIView(generics.CreateAPIView):
+    serializer_class = SubscriptionSerializer
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        course_id = self.request.data.get("course")
+        course_item = get_object_or_404(Course, pk=course_id)
+        subs_item = Subscription.objects.all().filter(course=course_item, user=user).first()
+
+        if subs_item:
+            subs_item.delete()
+            message = 'Подписка удалена'
+        else:
+            Subscription.objects.create(user=user, course=course_item)
+            message = 'Подписка добавлена'
+
+        return response.Response({"message": message})
+
+
+class SubscriptionListAPIView(generics.ListAPIView):
+    queryset = Subscription.objects.all()
+    serializer_class = SubscriptionSerializer
+#
+# class SubscriptionRetrieveAPIView(generics.RetrieveAPIView):
+#     queryset = Subscription.objects.all()
+#     serializer_class = SubscriptionSerializer
+#
+#
+# class SubscriptionUpdateAPIView(generics.UpdateAPIView):
+#     queryset = Subscription.objects.all()
+#     serializer_class = SubscriptionSerializer
+#
+#
+# class SubscriptionDestroyAPIView(generics.DestroyAPIView):
+#     queryset = Subscription.objects.all()
