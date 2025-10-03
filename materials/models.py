@@ -63,7 +63,7 @@ class Lesson(models.Model):
         null=True,
         blank=True,
         verbose_name="Ссылка на урок",
-        help_text="Добавьте ссылку на урок",
+        help_text="Добавьте ссылку формата 'https://ссылка_на_урок'",
     )
     creator = models.ForeignKey(
         "users.User",
