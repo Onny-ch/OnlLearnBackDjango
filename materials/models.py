@@ -19,6 +19,14 @@ class Course(models.Model):
         blank=True,
         null=True,
     )
+    creator = models.ForeignKey(
+        "users.User",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        verbose_name="Имя пользователя",
+        help_text="Укажите создателя курса",
+    )
 
     class Meta:
         verbose_name = "Курс"
@@ -56,6 +64,14 @@ class Lesson(models.Model):
         blank=True,
         verbose_name="Ссылка на урок",
         help_text="Добавьте ссылку на урок",
+    )
+    creator = models.ForeignKey(
+        "users.User",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        verbose_name="Имя пользователя",
+        help_text="Укажите создателя урока",
     )
 
     class Meta:

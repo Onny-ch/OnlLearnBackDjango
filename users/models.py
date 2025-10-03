@@ -59,7 +59,7 @@ class Payments(models.Model):
         blank=True,
         verbose_name="Оплаченный курс или урок",
         help_text="Укажите оплаченный курс или урок",
-        on_delete=models.SET_NULL
+        on_delete=models.SET_NULL,
     )
     paid_lesson = models.ForeignKey(
         Lesson,
@@ -67,7 +67,7 @@ class Payments(models.Model):
         blank=True,
         verbose_name="Оплаченный курс или урок",
         help_text="Укажите оплаченный курс или урок",
-        on_delete=models.SET_NULL
+        on_delete=models.SET_NULL,
     )
     payment_amount = models.DecimalField(
         max_digits=10,
@@ -84,3 +84,6 @@ class Payments(models.Model):
     class Meta:
         verbose_name = "Оплата"
         verbose_name_plural = "Оплаты"
+
+    def __str__(self):
+        return f"Оплата пользователя - {self.user}"
