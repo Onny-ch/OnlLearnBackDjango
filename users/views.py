@@ -1,11 +1,11 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, generics, viewsets, response
+from rest_framework import filters, generics, response, viewsets
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import AllowAny
 
 from materials.models import Course
-from users.models import Payments, User, Subscription
-from users.serializers import UserSerializer, SubscriptionSerializer
+from users.models import Payments, Subscription, User
+from users.serializers import SubscriptionSerializer, UserSerializer
 
 
 class PaymentsViewSet(viewsets.ModelViewSet):
@@ -59,14 +59,16 @@ class SubscriptionCreateAPIView(generics.CreateAPIView):
         user = self.request.user
         course_id = self.request.data.get("course")
         course_item = get_object_or_404(Course, pk=course_id)
-        subs_item = Subscription.objects.all().filter(course=course_item, user=user).first()
+        subs_item = (
+            Subscription.objects.all().filter(course=course_item, user=user).first()
+        )
 
         if subs_item:
             subs_item.delete()
-            message = 'Подписка удалена'
+            message = "Подписка удалена"
         else:
             Subscription.objects.create(user=user, course=course_item)
-            message = 'Подписка добавлена'
+            message = "Подписка добавлена"
 
         return response.Response({"message": message})
 
@@ -74,6 +76,8 @@ class SubscriptionCreateAPIView(generics.CreateAPIView):
 class SubscriptionListAPIView(generics.ListAPIView):
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
+
+
 #
 # class SubscriptionRetrieveAPIView(generics.RetrieveAPIView):
 #     queryset = Subscription.objects.all()

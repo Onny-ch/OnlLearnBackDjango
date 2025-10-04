@@ -6,23 +6,28 @@ from rest_framework.fields import SerializerMethodField
 
 from materials.models import Course
 from materials.serializers import CourseSerializer
-from users.models import User, Subscription
+from users.models import Subscription, User
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "email", "first_name", "last_name", "is_active", "is_staff",]
+        fields = [
+            "id",
+            "email",
+            "first_name",
+            "last_name",
+            "is_active",
+            "is_staff",
+        ]
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(
-        queryset=User.objects.all(),
-        required=True
+        queryset=User.objects.all(), required=True
     )
     course = serializers.PrimaryKeyRelatedField(
-        queryset=Course.objects.all(),
-        required=True
+        queryset=Course.objects.all(), required=True
     )
     subscription = SerializerMethodField()
 
