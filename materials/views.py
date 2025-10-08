@@ -26,7 +26,9 @@ class CourseViewSet(viewsets.ModelViewSet):
             self.permission_classes = (~IsModerator,)
         elif self.action == "destroy":
             self.permission_classes = (~IsModerator | IsCreator,)
-        elif self.action == "retrieve":  # ограничить доступ создателям только к своим записям
+        elif (
+            self.action == "retrieve"
+        ):  # ограничить доступ создателям только к своим записям
             self.permission_classes = (IsModerator | IsCreator,)
         elif self.action == "update":
             self.permission_classes = (IsModerator | IsCreator,)
