@@ -27,6 +27,12 @@ class Course(models.Model):
         verbose_name="Имя пользователя",
         help_text="Укажите создателя курса",
     )
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        verbose_name="Цена курса",
+        help_text="Укажите цену курса",
+    )
 
     class Meta:
         verbose_name = "Курс"
@@ -72,6 +78,12 @@ class Lesson(models.Model):
         on_delete=models.CASCADE,
         verbose_name="Имя пользователя",
         help_text="Укажите создателя урока",
+    )
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        verbose_name="Цена урока",
+        help_text="Укажите цену урока",
     )
 
     class Meta:
