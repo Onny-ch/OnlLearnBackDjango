@@ -3,7 +3,8 @@ from rest_framework import routers
 from rest_framework.permissions import AllowAny
 
 from users.apps import UsersConfig
-from users.views import (UserCreateAPIView, UserDestroyAPIView,
+from users.views import (SubscriptionCreateAPIView, SubscriptionListAPIView,
+                         UserCreateAPIView, UserDestroyAPIView,
                          UserListAPIView, UserRetrieveAPIView,
                          UserUpdateAPIView)
 
@@ -25,11 +26,17 @@ urlpatterns = [
         TokenRefreshView.as_view(permission_classes=(AllowAny,)),
         name="token_refresh",
     ),
-    path("user_list/", UserListAPIView.as_view(), name="user_list"),
+    path("user_list/", UserListAPIView.as_view(), name="user-list"),
     path("register/", UserCreateAPIView.as_view(), name="register"),
-    path("<int:pk>", UserRetrieveAPIView.as_view(), name="user_retrieve"),
-    path("update/<int:pk>", UserUpdateAPIView.as_view(), name="user_update"),
-    path("delete/<int:pk>", UserDestroyAPIView.as_view(), name="user_destroy"),
+    path("<int:pk>", UserRetrieveAPIView.as_view(), name="user-retrieve"),
+    path("update/<int:pk>", UserUpdateAPIView.as_view(), name="user-update"),
+    path("delete/<int:pk>", UserDestroyAPIView.as_view(), name="user-destroy"),
+    path(
+        "subscription/create/",
+        SubscriptionCreateAPIView.as_view(),
+        name="subscription-create",
+    ),
+    path("subscription/", SubscriptionListAPIView.as_view(), name="subscription-list"),
 ]  # + router.urls
 
 urlpatterns += router.urls

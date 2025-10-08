@@ -2,6 +2,8 @@ from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
 from materials.models import Course, Lesson
+from materials.validators import ValidatePermittedWords
+from users.models import Subscription
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -11,9 +13,12 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class LessonSerializer(serializers.ModelSerializer):
+    video_url = serializers.URLField(required=False)
+
     class Meta:
         model = Lesson
         fields = "__all__"
+        validators = [ValidatePermittedWords(field="video_url")]
 
 
 class CourseDetailSerializer(serializers.ModelSerializer):
@@ -21,12 +26,17 @@ class CourseDetailSerializer(serializers.ModelSerializer):
     lessons_information = (
         SerializerMethodField()
     )  # LessonSerializer(many=True, read_only=True)
+    # subscription = serializers.SerializerMethodField()
 
     def get_number_of_lessons(self, obj):
         return obj.lesson_set.count()
 
     def get_lessons_information(self, obj):
         return LessonSerializer(obj.lesson_set.all(), many=True).data
+
+    # def get_subscription(self, obj):
+    #     user = self.context['request'].user
+    #     return user
 
     class Meta:
         model = Course
@@ -38,4 +48,5 @@ class CourseDetailSerializer(serializers.ModelSerializer):
             "creator",
             "number_of_lessons",
             "lessons_information",
+            # "subscription",
         )
