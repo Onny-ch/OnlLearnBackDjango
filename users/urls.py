@@ -4,7 +4,7 @@ from rest_framework.permissions import AllowAny
 
 from users.apps import UsersConfig
 from users.views import (PaymentsCreateAPIView, PaymentsListAPIView,
-from users.views import (SubscriptionCreateAPIView, SubscriptionListAPIView,
+                         SubscriptionCreateAPIView, SubscriptionListAPIView,
                          UserCreateAPIView, UserDestroyAPIView,
                          UserListAPIView, UserRetrieveAPIView,
                          UserUpdateAPIView)
