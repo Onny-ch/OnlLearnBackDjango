@@ -9,7 +9,7 @@ def create_stripe_product(product_name):
     """Создает продукт в stripe."""
 
     product = stripe.Product.create(name=product_name)
-    return product.get("id")
+    return product.get("default_price")
 
 
 def create_stripe_price(amount):

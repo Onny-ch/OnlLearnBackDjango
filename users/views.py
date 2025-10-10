@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny
 from materials.models import Course, Lesson
 from users.models import Payments, User
 from users.serializers import PaymentsSerializer, UserSerializer
-from users.services import create_stripe_price, create_stripe_sessions
+from users.services import create_stripe_price, create_stripe_sessions, create_stripe_product
 
 
 class PaymentsViewSet(viewsets.ModelViewSet):
@@ -56,11 +56,12 @@ class PaymentsCreateAPIView(generics.CreateAPIView):
     def perform_create(self, serializer):
         payment = serializer.save(user=self.request.user)
         user_payment_method = payment.payment_method
-        # product_id = create_stripe_product(payment.payment_sign_name)
 
         sub_sign = self.request.data.get("paid_course")
         if sub_sign:
             course = Course.objects.get(id=sub_sign)
+            stripe_price = create_stripe_price(course.price)
+            # prod_price = create_stripe_product(sub_sign)
             payment.payment_amount = course.price
             payment.paid_course = course
         else:
@@ -68,12 +69,12 @@ class PaymentsCreateAPIView(generics.CreateAPIView):
             if sub_sign is None:
                 raise Exception("Выберите курс или урок для оплаты")
             lesson = Lesson.objects.get(id=sub_sign)
+            stripe_price = create_stripe_price(lesson.price)
+            # prod_price = create_stripe_product(sub_sign)
             payment.payment_amount = lesson.price
             payment.paid_lesson = lesson
 
-        price = create_stripe_price(payment.payment_amount)
-        payment_link, payment_method_types = create_stripe_sessions(price)
-
+        payment_link, payment_method_types = create_stripe_sessions(stripe_price)
         payment.payment_link = payment_link
 
         if user_payment_method in payment_method_types:
