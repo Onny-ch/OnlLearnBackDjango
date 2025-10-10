@@ -43,6 +43,8 @@ class User(AbstractUser):
 class Payments(models.Model):
     user = models.ForeignKey(
         "users.User",
+        null=True,
+        blank=True,
         on_delete=models.CASCADE,
         verbose_name="Имя пользователя",
         help_text="Укажите отправителя платежа",
@@ -68,6 +70,8 @@ class Payments(models.Model):
         on_delete=models.SET_NULL,
     )
     payment_amount = models.DecimalField(
+        blank=True,
+        null=True,
         max_digits=10,
         decimal_places=2,
         verbose_name="Оплата",
@@ -77,6 +81,13 @@ class Payments(models.Model):
         max_length=50,
         verbose_name="Метод оплаты",
         help_text="Укажите метод оплаты",
+    )
+    payment_link = models.URLField(
+        max_length=500,
+        blank=True,
+        null=True,
+        verbose_name="Ссылка на оплату",
+        help_text="Укажите ссылку на оплату",
     )
 
     class Meta:

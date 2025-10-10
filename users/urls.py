@@ -3,6 +3,7 @@ from rest_framework import routers
 from rest_framework.permissions import AllowAny
 
 from users.apps import UsersConfig
+from users.views import (PaymentsCreateAPIView, PaymentsListAPIView,
 from users.views import (SubscriptionCreateAPIView, SubscriptionListAPIView,
                          UserCreateAPIView, UserDestroyAPIView,
                          UserListAPIView, UserRetrieveAPIView,
@@ -28,9 +29,11 @@ urlpatterns = [
     ),
     path("user_list/", UserListAPIView.as_view(), name="user-list"),
     path("register/", UserCreateAPIView.as_view(), name="register"),
-    path("<int:pk>", UserRetrieveAPIView.as_view(), name="user-retrieve"),
-    path("update/<int:pk>", UserUpdateAPIView.as_view(), name="user-update"),
-    path("delete/<int:pk>", UserDestroyAPIView.as_view(), name="user-destroy"),
+    path("<int:pk>/", UserRetrieveAPIView.as_view(), name="user-retrieve"),
+    path("update/<int:pk>/", UserUpdateAPIView.as_view(), name="user-update"),
+    path("delete/<int:pk>/", UserDestroyAPIView.as_view(), name="user-destroy"),
+    path("payments/", PaymentsCreateAPIView.as_view(), name="payments"),
+    path("payments_list/", PaymentsListAPIView.as_view(), name="payments-list"),
     path(
         "subscription/create/",
         SubscriptionCreateAPIView.as_view(),

@@ -3,6 +3,10 @@ from rest_framework import filters, generics, response, viewsets
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import AllowAny
 
+from materials.models import Course, Lesson
+from users.models import Payments, User
+from users.serializers import PaymentsSerializer, UserSerializer
+from users.services import create_stripe_price, create_stripe_sessions, create_stripe_product
 from materials.models import Course
 from users.models import Payments, Subscription, User
 from users.serializers import SubscriptionSerializer, UserSerializer
@@ -52,6 +56,45 @@ class UserDestroyAPIView(generics.DestroyAPIView):
     queryset = User.objects.all()
 
 
+class PaymentsCreateAPIView(generics.CreateAPIView):
+    serializer_class = PaymentsSerializer
+
+    def perform_create(self, serializer):
+        payment = serializer.save(user=self.request.user)
+        user_payment_method = payment.payment_method
+
+        sub_sign = self.request.data.get("paid_course")
+        if sub_sign:
+            course = Course.objects.get(id=sub_sign)
+            stripe_price = create_stripe_price(course.price)
+            # prod_price = create_stripe_product(sub_sign)
+            payment.payment_amount = course.price
+            payment.paid_course = course
+        else:
+            sub_sign = self.request.data.get("paid_lesson")
+            if sub_sign is None:
+                raise Exception("Выберите курс или урок для оплаты")
+            lesson = Lesson.objects.get(id=sub_sign)
+            stripe_price = create_stripe_price(lesson.price)
+            # prod_price = create_stripe_product(sub_sign)
+            payment.payment_amount = lesson.price
+            payment.paid_lesson = lesson
+
+        payment_link, payment_method_types = create_stripe_sessions(stripe_price)
+        payment.payment_link = payment_link
+
+        if user_payment_method in payment_method_types:
+            payment.payment_method = user_payment_method
+        else:
+            payment.delete()
+            raise Exception(
+                f"Вы должны выбрать один из доступных вариантов оплаты: {payment_method_types}"
+            )
+
+
+class PaymentsListAPIView(generics.ListAPIView):
+    queryset = Payments.objects.all()
+    serializer_class = PaymentsSerializer
 class SubscriptionCreateAPIView(generics.CreateAPIView):
     serializer_class = SubscriptionSerializer
 

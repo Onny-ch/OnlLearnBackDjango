@@ -4,6 +4,7 @@ from django.contrib.auth import password_validation
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
+from users.models import Payments, User
 from materials.models import Course
 from materials.serializers import CourseSerializer
 from users.models import Subscription, User
@@ -15,10 +16,30 @@ class UserSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "email",
+
+            "avatar",
             "first_name",
             "last_name",
-            "is_active",
-            "is_staff",
+            "last_login",
+        ]
+
+
+class PaymentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payments
+        fields = [
+            "id",
+            "user",
+            "payment_date",
+            "paid_course",
+            "paid_lesson",
+            "payment_amount",
+            "payment_method",
+            "payment_link",
+            # "first_name",
+            # "last_name",
+            # "is_active",
+            # "is_staff",
         ]
 
 
