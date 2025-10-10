@@ -46,15 +46,7 @@ class Migration(migrations.Migration):
                         blank=True, null=True, verbose_name="Описание курса"
                     ),
                 ),
-                (
-                    "price",
-                    models.DecimalField(
-                        decimal_places=2,
-                        help_text="Укажите цену курса",
-                        max_digits=10,
-                        verbose_name="Цена курса",
-                    ),
-                ),
+
             ],
             options={
                 "verbose_name": "Курс",
@@ -101,20 +93,12 @@ class Migration(migrations.Migration):
                     "video_url",
                     models.URLField(
                         blank=True,
-                        help_text="Добавьте ссылку на урок",
+
                         null=True,
                         verbose_name="Ссылка на урок",
                     ),
                 ),
-                (
-                    "price",
-                    models.DecimalField(
-                        decimal_places=2,
-                        help_text="Укажите цену урока",
-                        max_digits=10,
-                        verbose_name="Цена урока",
-                    ),
-                ),
+
             ],
             options={
                 "verbose_name": "Урок",
