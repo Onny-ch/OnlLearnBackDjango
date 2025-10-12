@@ -1,8 +1,10 @@
 from os.path import exists
 
 from django.contrib.auth import password_validation
+from django.utils import timezone
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from users.models import Payments, User
 from materials.models import Course
@@ -57,8 +59,13 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subscription
-        fields = (
-            "user",
-            "course",
-            "subscription",
-        )
+        fields = "__all__"
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        user = self.user
+        user.last_login = timezone.now()
+        user.save()
+        return data
