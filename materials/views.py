@@ -3,9 +3,9 @@ from rest_framework.permissions import IsAuthenticated
 
 from materials.models import Course, Lesson
 from materials.paginators import CustomPagination
-from materials.serializers import (CourseDetailSerializer, LessonSerializer)
-from users.permissions import IsCreator, IsModerator
+from materials.serializers import CourseDetailSerializer, LessonSerializer
 from materials.tasks import sending_a_course_update_email
+from users.permissions import IsCreator, IsModerator
 
 
 class CourseViewSet(viewsets.ModelViewSet):

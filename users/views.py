@@ -5,10 +5,12 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from materials.models import Course, Lesson
-from users.serializers import PaymentsSerializer, CustomTokenObtainPairSerializer
-from users.services import create_stripe_price, create_stripe_sessions
 from users.models import Payments, Subscription, User
-from users.serializers import SubscriptionSerializer, UserSerializer
+from users.serializers import (CustomTokenObtainPairSerializer,
+                               PaymentsSerializer, SubscriptionSerializer,
+                               UserSerializer)
+from users.services import create_stripe_price, create_stripe_sessions
+
 
 class PaymentsViewSet(viewsets.ModelViewSet):
     queryset = Payments.objects.all()
@@ -132,6 +134,7 @@ class SubscriptionUpdateAPIView(generics.UpdateAPIView):
 
 class SubscriptionDestroyAPIView(generics.DestroyAPIView):
     queryset = Subscription.objects.all()
+
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer

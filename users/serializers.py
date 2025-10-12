@@ -6,10 +6,9 @@ from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from users.models import Payments, User
 from materials.models import Course
 from materials.serializers import CourseSerializer
-from users.models import Subscription, User
+from users.models import Payments, Subscription, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -18,7 +17,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "email",
-
             "avatar",
             "first_name",
             "last_name",
