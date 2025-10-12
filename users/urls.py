@@ -3,16 +3,17 @@ from rest_framework import routers
 from rest_framework.permissions import AllowAny
 
 from users.apps import UsersConfig
-from users.views import (PaymentsCreateAPIView, PaymentsListAPIView,
-                         SubscriptionCreateAPIView, SubscriptionListAPIView,
-                         UserCreateAPIView, UserDestroyAPIView,
-                         UserListAPIView, UserRetrieveAPIView,
-                         UserUpdateAPIView, SubscriptionRetrieveAPIView, SubscriptionUpdateAPIView,
-                         SubscriptionDestroyAPIView, CustomTokenObtainPairView)
+from users.views import (CustomTokenObtainPairView, PaymentsCreateAPIView,
+                         PaymentsListAPIView, SubscriptionCreateAPIView,
+                         SubscriptionDestroyAPIView, SubscriptionListAPIView,
+                         SubscriptionRetrieveAPIView,
+                         SubscriptionUpdateAPIView, UserCreateAPIView,
+                         UserDestroyAPIView, UserListAPIView,
+                         UserRetrieveAPIView, UserUpdateAPIView)
 
 app_name = UsersConfig.name
 
-from rest_framework_simplejwt.views import (TokenRefreshView)
+from rest_framework_simplejwt.views import TokenRefreshView
 
 router = routers.SimpleRouter()
 
@@ -39,10 +40,26 @@ urlpatterns = [
         SubscriptionCreateAPIView.as_view(),
         name="subscription-create",
     ),
-    path("subscriptions_list/", SubscriptionListAPIView.as_view(), name="subscriptions-list"),
-    path("subscription/<int:pk>/", SubscriptionRetrieveAPIView.as_view(), name="subscription-retrieve"),
-    path("subscription/update/<int:pk>/", SubscriptionUpdateAPIView.as_view(), name="subscription-update"),
-    path("subscription/delete/<int:pk>/", SubscriptionDestroyAPIView.as_view(), name="subscription-destroy"),
+    path(
+        "subscriptions_list/",
+        SubscriptionListAPIView.as_view(),
+        name="subscriptions-list",
+    ),
+    path(
+        "subscription/<int:pk>/",
+        SubscriptionRetrieveAPIView.as_view(),
+        name="subscription-retrieve",
+    ),
+    path(
+        "subscription/update/<int:pk>/",
+        SubscriptionUpdateAPIView.as_view(),
+        name="subscription-update",
+    ),
+    path(
+        "subscription/delete/<int:pk>/",
+        SubscriptionDestroyAPIView.as_view(),
+        name="subscription-destroy",
+    ),
 ]  # + router.urls
 
 urlpatterns += router.urls
