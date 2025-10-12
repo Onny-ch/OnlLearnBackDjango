@@ -3,8 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 
 from materials.models import Course, Lesson
 from materials.paginators import CustomPagination
-from materials.serializers import (CourseDetailSerializer, CourseSerializer,
-                                   LessonSerializer)
+from materials.serializers import CourseDetailSerializer, LessonSerializer
+from materials.tasks import sending_a_course_update_email
 from users.permissions import IsCreator, IsModerator
 
 
@@ -12,6 +12,11 @@ class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseDetailSerializer
     pagination_class = CustomPagination
+
+    def update(self, request, *args, **kwargs):
+        response = super().update(request, *args, **kwargs)
+        sending_a_course_update_email.delay(request.user.email)
+        return response
 
     def perform_create(self, serializer):
         course = serializer.save()
