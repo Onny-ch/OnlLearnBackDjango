@@ -2,14 +2,14 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, generics, response, viewsets
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import AllowAny
-from rest_framework_simplejwt.views import TokenObtainPairView
 
 from materials.models import Course, Lesson
+from users.models import Payments, User
+from users.serializers import PaymentsSerializer, UserSerializer
+from users.services import create_stripe_price, create_stripe_sessions, create_stripe_product
+from materials.models import Course
 from users.models import Payments, Subscription, User
-from users.serializers import (CustomTokenObtainPairSerializer,
-                               PaymentsSerializer, SubscriptionSerializer,
-                               UserSerializer)
-from users.services import create_stripe_price, create_stripe_sessions
+from users.serializers import SubscriptionSerializer, UserSerializer
 
 
 class PaymentsViewSet(viewsets.ModelViewSet):
@@ -95,8 +95,6 @@ class PaymentsCreateAPIView(generics.CreateAPIView):
 class PaymentsListAPIView(generics.ListAPIView):
     queryset = Payments.objects.all()
     serializer_class = PaymentsSerializer
-
-
 class SubscriptionCreateAPIView(generics.CreateAPIView):
     serializer_class = SubscriptionSerializer
 
@@ -107,6 +105,7 @@ class SubscriptionCreateAPIView(generics.CreateAPIView):
         subs_item = (
             Subscription.objects.all().filter(course=course_item, user=user).first()
         )
+
         if subs_item:
             subs_item.delete()
             message = "Подписка удалена"
@@ -122,19 +121,16 @@ class SubscriptionListAPIView(generics.ListAPIView):
     serializer_class = SubscriptionSerializer
 
 
-class SubscriptionRetrieveAPIView(generics.RetrieveAPIView):
-    queryset = Subscription.objects.all()
-    serializer_class = SubscriptionSerializer
-
-
-class SubscriptionUpdateAPIView(generics.UpdateAPIView):
-    queryset = Subscription.objects.all()
-    serializer_class = SubscriptionSerializer
-
-
-class SubscriptionDestroyAPIView(generics.DestroyAPIView):
-    queryset = Subscription.objects.all()
-
-
-class CustomTokenObtainPairView(TokenObtainPairView):
-    serializer_class = CustomTokenObtainPairSerializer
+#
+# class SubscriptionRetrieveAPIView(generics.RetrieveAPIView):
+#     queryset = Subscription.objects.all()
+#     serializer_class = SubscriptionSerializer
+#
+#
+# class SubscriptionUpdateAPIView(generics.UpdateAPIView):
+#     queryset = Subscription.objects.all()
+#     serializer_class = SubscriptionSerializer
+#
+#
+# class SubscriptionDestroyAPIView(generics.DestroyAPIView):
+#     queryset = Subscription.objects.all()
