@@ -7,19 +7,19 @@ from users.views import (PaymentsCreateAPIView, PaymentsListAPIView,
                          SubscriptionCreateAPIView, SubscriptionListAPIView,
                          UserCreateAPIView, UserDestroyAPIView,
                          UserListAPIView, UserRetrieveAPIView,
-                         UserUpdateAPIView)
+                         UserUpdateAPIView, SubscriptionRetrieveAPIView, SubscriptionUpdateAPIView,
+                         SubscriptionDestroyAPIView, CustomTokenObtainPairView)
 
 app_name = UsersConfig.name
 
-from rest_framework_simplejwt.views import (TokenObtainPairView,
-                                            TokenRefreshView)
+from rest_framework_simplejwt.views import (TokenRefreshView)
 
 router = routers.SimpleRouter()
 
 urlpatterns = [
     path(
         "login/",
-        TokenObtainPairView.as_view(permission_classes=(AllowAny,)),
+        CustomTokenObtainPairView.as_view(permission_classes=(AllowAny,)),
         name="login",
     ),
     path(
@@ -39,7 +39,10 @@ urlpatterns = [
         SubscriptionCreateAPIView.as_view(),
         name="subscription-create",
     ),
-    path("subscription/", SubscriptionListAPIView.as_view(), name="subscription-list"),
+    path("subscriptions_list/", SubscriptionListAPIView.as_view(), name="subscriptions-list"),
+    path("subscription/<int:pk>/", SubscriptionRetrieveAPIView.as_view(), name="subscription-retrieve"),
+    path("subscription/update/<int:pk>/", SubscriptionUpdateAPIView.as_view(), name="subscription-update"),
+    path("subscription/delete/<int:pk>/", SubscriptionDestroyAPIView.as_view(), name="subscription-destroy"),
 ]  # + router.urls
 
 urlpatterns += router.urls
