@@ -5,6 +5,7 @@ from materials.models import Course, Lesson
 from materials.paginators import CustomPagination
 from materials.serializers import CourseDetailSerializer, LessonSerializer
 from materials.tasks import sending_a_course_update_email
+from users.models import Subscription
 from users.permissions import IsCreator, IsModerator
 
 
@@ -15,7 +16,16 @@ class CourseViewSet(viewsets.ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)
-        sending_a_course_update_email.delay(request.user.email)
+
+        course_id = (response.data.get('id'))
+        subs_list = Subscription.objects.filter(course=course_id)
+        emails_list = []
+
+        for sub in subs_list:
+            emails_list.append(sub.user.email)
+
+        sending_a_course_update_email.delay(emails_list)
+
         return response
 
     def perform_create(self, serializer):

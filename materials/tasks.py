@@ -11,3 +11,4 @@ def sending_a_course_update_email(email):
         settings.EMAIL_HOST_USER,
         [email],
     )
+    print("All ok!")
