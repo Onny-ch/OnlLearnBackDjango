@@ -49,7 +49,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run migrations
-      run: python manage.py migrate
+      run: python manage.py migrate --fake-initial
 
     - name: Run tests
       run: python manage.py test --settings=ci_settings
