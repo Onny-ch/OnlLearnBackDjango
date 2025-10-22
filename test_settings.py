@@ -1,12 +1,15 @@
 from config.settings import *
 
+SECRET_KEY = 'test-secret-key-for-ci-only'
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "test_myapp",
-        "USER": os.getenv("POSTGRES_USER"),
-        "HOST": os.getenv("HOST"),
-        "PORT": os.getenv("PORT"),
+        "USER": "postgres",
+        "PASSWORD": "",
+        "HOST": "localhost",
+        "PORT": "5432",
     }
 }
 
