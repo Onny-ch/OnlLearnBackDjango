@@ -48,22 +48,16 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Check DB
-      run: python manage.py dbshell --command="SELECT 1;"
-
-    - name: Run tests with debug
+    - name: Reset PostgreSQL for tests
       run: |
-        python manage.py test --verbosity=2 --traceback
-
-    - name: Show migrations
-      run: python manage.py showmigrations
-
+        psql -U postgres -c "DROP DATABASE IF EXISTS test_myapp;"
+        psql -U postgres -c "CREATE DATABASE test_myapp;"
 
     - name: Run migrations
-      run: python manage.py migrate
+      run: python manage.py migrate --settings=test_settings
 
     - name: Run tests
-      run: python manage.py test
+      run: python manage.py test --settings=test_settings
 
   build:
     runs-on: ubuntu-latest
