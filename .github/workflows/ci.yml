@@ -77,7 +77,10 @@ jobs:
 
     - name: Run migrations
       run: python manage.py migrate --settings=test_settings
-
+      env:
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        POSTGRES_DB: test_myapp
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
     - name: Run tests
       run: python manage.py test --settings=test_settings
