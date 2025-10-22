@@ -16,11 +16,13 @@ class CourseTestCase(APITestCase):
         self.course = Course.objects.create(
             name="Курс хим",
             creator=self.user,
+            price=1000,
         )
         self.lesson = Lesson.objects.create(
             name="Урок хим",
             course=self.course,
             creator=self.user,
+            price=50,
         )
         self.subscription = Subscription.objects.create(
             user=self.user,
@@ -35,6 +37,7 @@ class CourseTestCase(APITestCase):
         course2 = Course.objects.create(
             name="Курс физ",
             creator=self.user,
+            price=100,
         )
         data = {
             "user": user2.pk,
@@ -45,11 +48,12 @@ class CourseTestCase(APITestCase):
         self.assertEqual(Course.objects.all().count(), 2)
 
     def test_subscription_list(self):
-        url = reverse("users:subscription-list")
+        url = reverse("users:subscriptions-list")
         response = self.client.get(url)
         data = response.json()
         get_data = [
             {
+                "id": 1,
                 "user": self.subscription.user.pk,
                 "course": self.subscription.course.pk,
                 "subscription": None,
