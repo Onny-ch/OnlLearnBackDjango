@@ -78,6 +78,7 @@ jobs:
     - name: Run migrations
       run: python manage.py migrate --settings=test_settings
 
+
     - name: Run tests
       run: python manage.py test --settings=test_settings
 
