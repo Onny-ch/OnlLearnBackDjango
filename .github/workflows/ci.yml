@@ -48,6 +48,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Set up test database
+      run: |
+        echo "DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': ':memory:'}}" > test_settings.py
+
     - name: Run migrations
       run: python manage.py migrate
 
