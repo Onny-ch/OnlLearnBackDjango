@@ -53,7 +53,7 @@ class CourseTestCase(APITestCase):
         data = response.json()
         get_data = [
             {
-                "id": 1,
+                "id": 3,
                 "user": self.subscription.user.pk,
                 "course": self.subscription.course.pk,
                 "subscription": None,
