@@ -1,19 +1,27 @@
 from django.urls import path
+from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework import routers
 from rest_framework.permissions import AllowAny
 
 from users.apps import UsersConfig
-from users.views import (CustomTokenObtainPairView, PaymentsCreateAPIView,
-                         PaymentsListAPIView, SubscriptionCreateAPIView,
-                         SubscriptionDestroyAPIView, SubscriptionListAPIView,
-                         SubscriptionRetrieveAPIView,
-                         SubscriptionUpdateAPIView, UserCreateAPIView,
-                         UserDestroyAPIView, UserListAPIView,
-                         UserRetrieveAPIView, UserUpdateAPIView)
+from users.views import (
+    CustomTokenObtainPairView,
+    PaymentsCreateAPIView,
+    PaymentsListAPIView,
+    SubscriptionCreateAPIView,
+    SubscriptionDestroyAPIView,
+    SubscriptionListAPIView,
+    SubscriptionRetrieveAPIView,
+    SubscriptionUpdateAPIView,
+    UserCreateAPIView,
+    UserDestroyAPIView,
+    UserListAPIView,
+    UserRetrieveAPIView,
+    UserUpdateAPIView,
+)
 
 app_name = UsersConfig.name
 
-from rest_framework_simplejwt.views import TokenRefreshView
 
 router = routers.SimpleRouter()
 

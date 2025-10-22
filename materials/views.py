@@ -17,7 +17,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)
 
-        course_id = (response.data.get('id'))
+        course_id = response.data.get("id")
         subs_list = Subscription.objects.filter(course=course_id)
         emails_list = []
 

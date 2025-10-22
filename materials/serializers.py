@@ -3,7 +3,7 @@ from rest_framework.fields import SerializerMethodField
 
 from materials.models import Course, Lesson
 from materials.validators import ValidatePermittedWords
-from users.models import Subscription
+# from users.models import Subscription
 
 
 class CourseSerializer(serializers.ModelSerializer):
