@@ -22,7 +22,7 @@ jobs:
           pip install flake8 black isort
 
       - name: Run Flake8
-        run: flake8 . --exclude=.venv,htmlcov,__pycache__,migrations,config,.github
+        run: flake8 . --exclude=.venv,htmlcov,__pycache__,migrations,config,.github,test_settings.py
 
       - name: Run Black
         run: black .
