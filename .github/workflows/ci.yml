@@ -36,7 +36,7 @@ jobs:
       postgres:
         image: postgres:14
         env:
-          POSTGRES_PASSWORD: os.getenv("POSTGRES_PASSWORD")
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: test_myapp
         ports:
           - 5432:5432
@@ -51,8 +51,13 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v3
 
-    - name: Wait for PostgreSQL
-      run: sleep 10
+    - name: Wait for PostgreSQL readiness
+      run: |
+        for i in {1..10}; do
+          PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }} psql -U postgres -h localhost -p 5432 -c "SELECT 1;" && break
+          echo "PostgreSQL not ready, waiting..."
+          sleep 5
+        done
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -64,20 +69,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Install and start PostgreSQL
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y postgresql postgresql-contrib
-        sudo systemctl start postgresql
-
-    - name: Check PostgreSQL status
-      run: sudo systemctl status postgresql || sudo service postgresql status
-
-
     - name: Reset PostgreSQL for tests
       run: |
-        psql -U postgres -h localhost -p 5432 -c "DROP DATABASE IF EXISTS test_myapp;"
-        psql -U postgres -h localhost -p 5432 -c "CREATE DATABASE test_myapp;"
+        PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }} psql -U postgres -h localhost -p 5432 -c "DROP DATABASE IF EXISTS test_myapp;"
+        PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }} psql -U postgres -h localhost -p 5432 -c "CREATE DATABASE test_myapp;"
 
     - name: Run migrations
       run: python manage.py migrate --settings=test_settings
