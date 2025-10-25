@@ -112,7 +112,6 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "89.169.175.36 ssh-ed25519 SHA256:o28XMs9yYVBvpEOfthxrMxwEpqbkG/HHHshoWU8RSJk" >> ~/.ssh/known_hosts
-          echo "89.169.175.36 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaljqdmKMwzHMG49ZxtECidrBnnoWHkryW4M9wZXj5hKLKTeh1sjLNTiIkvyYfgVzqJ/iN69IBY2XWfNSVhjiLPMfdrskbmpX5LDtp2BFee+NMu3s3fufXWDpQo9VxZulvPv6CLNL40UyKI1JU0plwMXoJBq5TpyokG4Dv60Qcpbo7f/hV2Pert5CKFHU26WTMTFMJ191IY5fR0yP2rtArP779IkRqphzYkCqybY/WBEqPfUtWXi/3e9qHA42JkdIAS9K1vh1SDqjlsMOOqymzB1pJseuk1K/em/n+y2XzbRpxQYDfNtVt76+ptoooZ+SpmGcsw29l63Abv1g+7c/giFW72/oz4KHUiKDjgBlZyk0aKv8H9CIkADVFax3ejHc5xkKOzXLmwxRKdSPgNCokPSw9u0sgWlx2umdSZP9n5aUZEYut/BdqotkMHV0HK0tMon9GExGcW2abumEQ2MCor3UuyyieQk93q08oRaOFA6AGfDz3hu0RlwrBaS0oV63IFMYwbn9JLRqDBKCIhNHliJYLvCMlnScguVrvyYuZiThKi5hhZNw1dSlo+6inBpZIMNOKXk0LR27eTc5LxOE2EsLF/7ebducSXTSTBp0PzhtZBz6mEm6IXH6Roh5WYWWVkOAny2HtUOey7pTq+0zy6FHZeXW3gsZ7qekA9gnO7Q==" >> ~/.ssh/known_hosts
 
       - name: Set up SSH
         uses: appleboy/ssh-action@v1.0.3
