@@ -113,6 +113,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "89.169.175.36 ssh-ed25519 SHA256:o28XMs9yYVBvpEOfthxrMxwEpqbkG/HHHshoWU8RSJk" >> ~/.ssh/known_hosts
 
+
       - name: Set up SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
