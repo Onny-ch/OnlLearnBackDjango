@@ -108,6 +108,13 @@ jobs:
     needs: build
 
     steps:
+      - name: Accept SSH host key
+        run: |
+          mkdir -p ~/.ssh
+          echo "89.169.175.36 ssh-ed25519 SHA256:o28XMs9yYVBvpEOfthxrMxwEpqbkG/HHHshoWU8RSJk" >> ~/.ssh/known_hosts
+          
+          
+
       - name: Set up SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -137,3 +144,4 @@ jobs:
             REDIS_DB=${{ secrets.REDIS_DB }}
             
             EOF
+            cat ~/secr.pub | ssh onnych@89.169.176.220 "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
