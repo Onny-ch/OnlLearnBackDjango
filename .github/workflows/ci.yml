@@ -142,4 +142,3 @@ jobs:
             REDIS_DB=${{ secrets.REDIS_DB }}
             
             EOF
-            cat ~/secr.pub | ssh onnych@89.169.176.220 "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
