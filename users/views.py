@@ -6,9 +6,12 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 from materials.models import Course, Lesson
 from users.models import Payments, Subscription, User
-from users.serializers import (CustomTokenObtainPairSerializer,
-                               PaymentsSerializer, SubscriptionSerializer,
-                               UserSerializer)
+from users.serializers import (
+    CustomTokenObtainPairSerializer,
+    PaymentsSerializer,
+    SubscriptionSerializer,
+    UserSerializer,
+)
 from users.services import create_stripe_price, create_stripe_sessions
 
 

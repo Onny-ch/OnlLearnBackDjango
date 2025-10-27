@@ -1,4 +1,4 @@
-from http.client import responses
+# from http.client import responses
 
 from django.urls import reverse
 from rest_framework import status
@@ -17,11 +17,13 @@ class CourseTestCase(APITestCase):
         self.course = Course.objects.create(
             name="Курс хим",
             creator=self.user,
+            price=100,
         )
         self.lesson = Lesson.objects.create(
             name="Урок хим",
             course=self.course,
             creator=self.user,
+            price=10,
         )
         self.client.force_authenticate(
             user=self.user,
@@ -38,6 +40,7 @@ class CourseTestCase(APITestCase):
         url = reverse("materials:course-list")
         data = {
             "name": "Курс физ",
+            "price": 100,
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -47,6 +50,7 @@ class CourseTestCase(APITestCase):
         url = reverse("materials:course-detail", args=(self.course.pk,))
         data = {
             "name": "Курс физ",
+            "price": 100,
         }
         response = self.client.patch(url, data)
         data = response.json()
@@ -74,6 +78,7 @@ class CourseTestCase(APITestCase):
                     "preview": None,
                     "description": self.course.description,
                     "creator": self.course.creator.pk,
+                    "price": "100.00",
                     "number_of_lessons": 1,
                     "lessons_information": [
                         {
@@ -82,6 +87,7 @@ class CourseTestCase(APITestCase):
                             "name": self.lesson.name,
                             "description": self.lesson.description,
                             "preview": None,
+                            "price": "10.00",
                             "course": self.course.pk,
                             "creator": self.lesson.creator.pk,
                         }
@@ -102,11 +108,13 @@ class LessonTestCase(APITestCase):
         self.course = Course.objects.create(
             name="Курс хим",
             creator=self.user,
+            price=1000,
         )
         self.lesson = Lesson.objects.create(
             name="Урок хим",
             course=self.course,
             creator=self.user,
+            price=100,
         )
         self.client.force_authenticate(
             user=self.user,
@@ -123,6 +131,7 @@ class LessonTestCase(APITestCase):
         url = reverse("materials:lessons-create")
         data = {
             "name": "Урок физ",
+            "price": 100,
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -132,6 +141,8 @@ class LessonTestCase(APITestCase):
         url = reverse("materials:lessons-update", args=(self.lesson.pk,))
         data = {
             "name": "Урок физ",
+            "price": 1000,
+            "video_url": "http://www.youtube.com",
         }
         response = self.client.patch(url, data)
         data = response.json()
@@ -159,6 +170,7 @@ class LessonTestCase(APITestCase):
                     "name": self.lesson.name,
                     "description": self.lesson.description,
                     "preview": None,
+                    "price": "100.00",
                     "course": self.lesson.course.pk,
                     "creator": self.lesson.creator.pk,
                 }

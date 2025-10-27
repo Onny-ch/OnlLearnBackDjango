@@ -1,13 +1,14 @@
-from os.path import exists
-
-from django.contrib.auth import password_validation
+# from os.path import exists
+#
+# from django.contrib.auth import password_validation
 from django.utils import timezone
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from materials.models import Course
-from materials.serializers import CourseSerializer
+
+# from materials.serializers import CourseSerializer
 from users.models import Payments, Subscription, User
 
 

@@ -3,7 +3,8 @@ from rest_framework.fields import SerializerMethodField
 
 from materials.models import Course, Lesson
 from materials.validators import ValidatePermittedWords
-from users.models import Subscription
+
+# from users.models import Subscription
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -13,12 +14,16 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class LessonSerializer(serializers.ModelSerializer):
-    video_url = serializers.URLField(required=False)
+    video_url = serializers.URLField(
+        required=False,
+        allow_null=True,
+        allow_blank=True,
+        validators=[ValidatePermittedWords(field="video_url")],
+    )
 
     class Meta:
         model = Lesson
         fields = "__all__"
-        validators = [ValidatePermittedWords(field="video_url")]
 
 
 class CourseDetailSerializer(serializers.ModelSerializer):
