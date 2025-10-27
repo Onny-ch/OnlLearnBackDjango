@@ -120,7 +120,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /home/${{ secrets.SERVER_USER }}/app/PythonProject30.1 || mkdir -p /home/${{ secrets.SERVER_USER }}/app/PythonProject30.1 && 
+            cd /home/${{ secrets.SERVER_USER }}/app/OnlLearnBackDjango || mkdir -p /home/${{ secrets.SERVER_USER }}/app/OnlLearnBackDjango && 
             cat << 'EOF' > .env
             SECRET_KEY=${{ secrets.SECRET_KEY }}
             DATABASE_NAME=${{ secrets.DATABASE_NAME }}
@@ -140,5 +140,10 @@ jobs:
             REDIS_HOST=${{ secrets.REDIS_HOST }}
             REDIS_PORT=${{ secrets.REDIS_PORT }}
             REDIS_DB=${{ secrets.REDIS_DB }}
+            
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
+            docker stop myapp || true
+            docker rm myapp || true
+            docker run -d --name myapp -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
             
             EOF
