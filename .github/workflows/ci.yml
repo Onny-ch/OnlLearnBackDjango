@@ -129,7 +129,7 @@ jobs:
             docker run -d --name myapp -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
             
             SECRET_KEY=${{ secrets.SECRET_KEY }}
-            DATABASE_NAME=${{ secrets.DATABASE_NAME }}
+            DATABASE_NAME=${{ secrets.DATABASE_NAME }}  
             DATABASE_USER=${{ secrets.DATABASE_USER }}
             DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
             DATABASE_HOST=${{ secrets.DATABASE_HOST }}
